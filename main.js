@@ -1,49 +1,5 @@
 "use strict"
 
-const cities = [
-    {
-        name: "Indianapolis, IN",
-        latitude: 39.79303691145844,
-        longitude: -86.15616806469983,
-    },
-    {
-        name: "Anchorage, AK",
-        latitude: 61.21793482390542,
-        longitude: -149.9001050732621,
-    },
-    {
-        name: "Renton, WA",
-        latitude: 47.48002580027486,
-        longitude: -122.20512725433403,
-    },
-    {
-        name: "Washington, PA",
-        latitude: 40.17412934199111,
-        longitude: -80.24893021016534,
-    },
-    {
-        name: "Dexter, MO",
-        latitude: 36.795516838474775,
-        longitude: -89.95833599547308,
-    },
-    {
-        name: "Duluth, MN",
-        latitude: 46.78603170717839,
-        longitude: -92.09856041348712,
-    },
-    {
-        name: "Memphis, TN",
-        latitude: 35.150076933079276,
-        longitude: -90.04782180432672,
-    },
-    {
-        name: "Cave City, AR",
-        latitude: 35.9419586832384,
-        longitude: -91.54875159317395,
-    }
-]
-
-
 // 1. Populate city select element with city names from the city array above.
 // 2. onchange event handler which finds the latitude & longitude for selected city 
 // 3. fetch(`https://api.weather.gov/points/${latitude},${longitude}`)
@@ -52,8 +8,6 @@ const cities = [
 // 5. fetch(data.properties.forecastHourly)
 // 6. Loop through the array of forecast periods (data.properties.periods)
 // 7. Display a forecast for each forecast period.
-
-
 
 window.onload = function () {
     const citySelect = document.querySelector("select#city")
@@ -93,7 +47,12 @@ function handleCityChange(event) {
 function getHourlyForecast(forecastURL) {
     if (forecastURL === null) {
         const resultsDiv = document.querySelector("#forecastResults")
-        resultsDiv.innerHTML = `<h2 class="animate__animated animate__flash">Forecast Unavailable</h2>`
+        resultsDiv.innerHTML = `
+            <h2 class="animate__animated animate__flash">
+                Forecast Unavailable
+            </h2>
+        `
+
         return
     }
 
@@ -146,41 +105,4 @@ function createForecastCard (forecast) {
                 </div>
             </div>
     `
-}
-
-
-function triggerCardAnimations () {
-    const cards = document.querySelectorAll(".card")
-    
-    let index = 0
-    const intervalId = setInterval(animate, 150)
-
-    function animate () {
-        cards[index].classList.add("animate__pulse")
-        index += 1
-
-        if (index >= cards.length) {
-            clearInterval(intervalId)
-            return
-        }
-    }
-}
-
-
-function triggerCurrentHourGlow () {
-    const oneMinute = 60000
-    setInterval(updateCurrentHourGlow, oneMinute)
-
-    function updateCurrentHourGlow () {
-        const currentHour = new Date()
-            .toLocaleTimeString(undefined, { hour: "numeric" })
-        
-        const prevCurrentHourCard = document.querySelector(".card.current-hour")
-        if (prevCurrentHourCard !== null) {
-            prevCurrentHourCard.classList.remove("current-hour")
-        }
-
-        const currentHourCard = document.querySelector(`.card[data-hour="${currentHour}"]`)
-        currentHourCard.classList.add("current-hour")
-    }
 }
