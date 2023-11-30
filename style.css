@@ -1,0 +1,39 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(rgb(255, 218, 203), #ee8b8b);
+    background-attachment: fixed;
+    padding-top: 4rem;
+    padding-left: 10vw;
+    padding-right: 10vw;
+}
+
+section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 3px dotted white;
+}
+
+footer {
+    margin-top: 10vh;
+}
+
+#forecastResults {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.card {
+    width: 10rem;
+    border: 0.15rem solid black;
+}
+
+.card:first-of-type, .card:hover {
+    border: 0.15rem solid white;
+    filter: drop-shadow(0 0 1rem white);
+}
