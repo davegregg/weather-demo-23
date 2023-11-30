@@ -125,6 +125,7 @@ function renderHourlyForecasts(forecasts) {
     const resultsDiv = document.querySelector("#forecastResults")
     resultsDiv.innerHTML = html
     triggerCardAnimations()
+    triggerCurrentHourGlow()
 }
 
 
@@ -136,7 +137,7 @@ function createForecastCard (forecast) {
         .replace(",0", ",1")        // 0% icons don't seem to exist, so workaround displaying 1%
 
     return `
-            <div class="card animate__animated">
+            <div data-hour="${hourText}" class="card animate__animated">
                 <img src="${correctedIcon}" class="card-img-top" alt="${forecast.shortForecast}">
                 <div class="card-body">
                     <h5 class="card-title">${hourText} today</h5>
@@ -162,5 +163,24 @@ function triggerCardAnimations () {
             clearInterval(intervalId)
             return
         }
+    }
+}
+
+
+function triggerCurrentHourGlow () {
+    const oneMinute = 60000
+    setInterval(updateCurrentHourGlow, oneMinute)
+
+    function updateCurrentHourGlow () {
+        const currentHour = new Date()
+            .toLocaleTimeString(undefined, { hour: "numeric" })
+        
+        const prevCurrentHourCard = document.querySelector(".card.current-hour")
+        if (prevCurrentHourCard !== null) {
+            prevCurrentHourCard.classList.remove("current-hour")
+        }
+
+        const currentHourCard = document.querySelector(`.card[data-hour="${currentHour}"]`)
+        currentHourCard.classList.add("current-hour")
     }
 }

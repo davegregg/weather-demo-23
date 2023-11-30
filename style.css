@@ -33,7 +33,7 @@ footer {
     border: 0.15rem solid black;
 }
 
-.card:first-of-type, .card:hover {
+.card:hover, .current-hour {
     border: 0.15rem solid white;
     filter: drop-shadow(0 0 1rem white);
 }
