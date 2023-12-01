@@ -26,8 +26,15 @@ footer {
     justify-content: space-around;
     flex-wrap: wrap;
     gap: 2rem;
+
+    --forecast-card-border-width: 0.15rem;
+}
+
+#forecastResults .error {
+    text-align: center;
 }
 
 .card {
     width: 10rem;
+    border: var(--forecast-card-border-width) solid black;
 }

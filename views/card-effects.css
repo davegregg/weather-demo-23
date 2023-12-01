@@ -1,0 +1,8 @@
+.card:hover, .current-hour {
+    border: var(--forecast-card-border-width) solid white;
+    filter: drop-shadow(0 0 1rem white);
+}
+
+#forecastResults .card:hover {
+    transform: scale(1.1) !important;
+}
