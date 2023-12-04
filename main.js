@@ -12,8 +12,7 @@
 window.onload = function () {
     const citySelect = document.querySelector("select#city")
     populateCities(citySelect, cities)
-
-    citySelect.onchange = handleCityChange
+    citySelect.onchange = fetchPointData
 }
 
 
@@ -30,50 +29,6 @@ function populateCities(selectElement, cities) {
 }
 
 
-function handleCityChange(event) {
-    const chosenCoordinates = event.target.value
-
-    console.info(`Requesting point data for coordinates (${chosenCoordinates}).`)
-    fetch(`https://api.weather.gov/points/${chosenCoordinates}`)
-        .then(response => response.json())
-        .then(data => {
-            console.info(`Point data received:`, data)
-            return data.properties.forecastHourly
-        })
-        .then(getHourlyForecast)
-}
-
-
-function getHourlyForecast(forecastURL) {
-    if (forecastURL === null) {
-        const resultsDiv = document.querySelector("#forecastResults")
-        resultsDiv.innerHTML = `
-            <h2 class="animate__animated animate__flash">
-                Forecast Unavailable
-            </h2>
-        `
-
-        return
-    }
-
-    console.info(`Requesting hourly forecast via "${forecastURL}".`)
-    fetch(forecastURL)
-        .then(response => response.json())
-        .then(data => {
-            console.info(`Forecast data received"`, data)
-            return data.properties.periods.filter(toTodayOnly)
-        })
-        .then(renderHourlyForecasts)
-}
-
-
-function toTodayOnly (forecastPeriod) {
-    const date = new Date(forecastPeriod.startTime)
-    const today = new Date()
-
-    return date.getDate() === today.getDate()
-}
-
 
 function renderHourlyForecasts(forecasts) {
     let html = ""
@@ -83,7 +38,7 @@ function renderHourlyForecasts(forecasts) {
 
     const resultsDiv = document.querySelector("#forecastResults")
     resultsDiv.innerHTML = html
-    triggerCardAnimations()
+    triggerCardAnimationsAfterDelay()
     triggerCurrentHourGlow()
 }
 
@@ -96,13 +51,61 @@ function createForecastCard (forecast) {
         .replace(",0", ",1")        // 0% icons don't seem to exist, so workaround displaying 1%
 
     return `
-            <div data-hour="${hourText}" class="card animate__animated">
-                <img src="${correctedIcon}" class="card-img-top" alt="${forecast.shortForecast}">
-                <div class="card-body">
-                    <h5 class="card-title">${hourText} today</h5>
-                    <h6 class="card-subtitle">${forecast.temperature}°${forecast.temperatureUnit}</h6>
-                    <p class="card-text">${forecast.shortForecast}</p>
-                </div>
+        <div data-hour="${hourText}" class="card">
+            <img src="${correctedIcon}" class="card-img-top" alt="${forecast.shortForecast}">
+            <div class="card-body">
+                <h5 class="card-title">${hourText} today</h5>
+                <h6 class="card-subtitle">${forecast.temperature}°${forecast.temperatureUnit}</h6>
+                <p class="card-text">${forecast.shortForecast}</p>
             </div>
+        </div>
     `
 }
+
+
+
+
+
+
+
+
+
+function log(message, importance="info", date=new Date()) {
+    let logger = null
+    switch (importance) {
+        case "error":
+        case "urgent":
+            logger = console.error
+            break
+
+        case "warn":
+        case "medium":
+            logger = console.warn
+            break
+
+        case "info":
+        case "log":
+        case "low":
+        default:
+            logger = console.log
+    }
+
+    logger(`[${date.getHours()}:${date.getMinutes()}] [${importance}] ${message}`);
+}
+
+function info (message) {
+    log(message, "info")
+}
+
+function warn(message) {
+    log(message, "warn")
+}
+
+function error(message) {
+    log(message, "error")
+}
+
+info("Oh, Potato.")
+warn("Hmmm... Potato!")
+error("ARGGGH! Potato!")
+

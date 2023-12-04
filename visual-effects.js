@@ -1,20 +1,23 @@
 "use strict"
 
-function triggerCardAnimations () {
-    const cards = document.querySelectorAll(".card")
+function triggerCardAnimationsAfterDelay () {
+    const cards = document.querySelectorAll("#forecastResults .card")
+    const imageOfSixthCard = cards[5].querySelector(".card-img-top")
+    imageOfSixthCard.onload = () => {
+        let index = 0
+        const intervalId = setInterval(animate, 150)
     
-    let index = 0
-    const intervalId = setInterval(animate, 150)
-
-    function animate () {
-        cards[index].classList.add("animate__pulse")
-        index += 1
-
-        if (index >= cards.length) {
-            clearInterval(intervalId)
-            return
+        function animate () {
+            cards[index].classList.add("animate__animated", "animate__pulse")
+            index += 1
+    
+            if (index >= cards.length) {
+                clearInterval(intervalId)
+                return
+            }
         }
     }
+    
 }
 
 
