@@ -45,7 +45,7 @@ function renderHourlyForecasts(forecasts) {
 
 function createForecastCard (forecast) {
     const hourText = new Date(forecast.startTime)
-            .toLocaleTimeString(undefined, { hour: "numeric" })
+        .toLocaleTimeString(undefined, { hour: "numeric" })
     const correctedIcon = forecast.icon
         .replace("small", "large")  // get larger icon size
         .replace(",0", ",1")        // 0% icons don't seem to exist, so workaround displaying 1%
