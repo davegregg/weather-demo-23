@@ -5,7 +5,7 @@ function triggerCardAnimationsAfterDelay () {
     const imageOfSixthCard = cards[5].querySelector(".card-img-top")
     imageOfSixthCard.onload = () => {
         let index = 0
-        const intervalId = setInterval(animate, 150)
+        const intervalId = setInterval(animate, 250)
     
         function animate () {
             cards[index].classList.add("animate__animated", "animate__pulse")
