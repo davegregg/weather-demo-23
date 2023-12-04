@@ -20,7 +20,7 @@ function populateCities(selectElement, cities) {
     let html = ""
     for (const city of cities) {
         html += `
-            <option value="${city.latitude},${city.longitude}">${city.name}</option>
+            <option data-city="${city.name}" value="${city.latitude},${city.longitude}">${city.name}</option>
         `
     }
 
